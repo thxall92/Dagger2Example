@@ -1,4 +1,4 @@
-package com.eunhye.dagger2example.ui
+package com.eunhye.dagger2example.ui.post
 
 import android.os.Bundle
 import androidx.annotation.StringRes
@@ -15,7 +15,6 @@ import com.google.android.material.snackbar.Snackbar
 class PostListActivity: AppCompatActivity() {
     private lateinit var binding: ActivityPostListBinding
     private lateinit var viewModel: PostListViewModel
-
     private var errorSnackbar: Snackbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +27,8 @@ class PostListActivity: AppCompatActivity() {
         viewModel.errorMessage.observe(this, Observer {
             errorMessage -> if(errorMessage!=null) showError(errorMessage) else hideError()
         })
+
+        binding.viewModel = viewModel
     }
 
     private fun showError(@StringRes errorMessage:Int){

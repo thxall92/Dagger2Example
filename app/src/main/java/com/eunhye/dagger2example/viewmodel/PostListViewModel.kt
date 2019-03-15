@@ -1,10 +1,13 @@
 package com.eunhye.dagger2example.viewmodel
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.eunhye.dagger2example.R
 import com.eunhye.dagger2example.base.BaseViewModel
+import com.eunhye.dagger2example.model.Post
 import com.eunhye.dagger2example.network.PostApi
+import com.eunhye.dagger2example.ui.post.PostListAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -13,6 +16,7 @@ import javax.inject.Inject
 class PostListViewModel:BaseViewModel() {
     @Inject
     lateinit var postApi: PostApi
+    val postListAdapter: PostListAdapter = PostListAdapter()
 
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
     // MutableLiveData : view will be able to observe in order to updat e the visibility of the ProgressBar
@@ -30,10 +34,10 @@ class PostListViewModel:BaseViewModel() {
         subscription = postApi.getPosts()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe{ onRetrievePostListStart()}
-            .doOnTerminate{ onRetrievePostListFinish()}
+            .doOnSubscribe { onRetrievePostListStart() }
+            .doOnTerminate { onRetrievePostListFinish() }
             .subscribe(
-                { onRetrievePostListSuccess() },
+                { result -> onRetrievePostListSuccess(result) },
                 { onRetrievePostListError() }
             )
 
@@ -46,7 +50,9 @@ class PostListViewModel:BaseViewModel() {
     private fun onRetrievePostListFinish(){
         loadingVisibility.value = View.GONE
     }
-    private fun onRetrievePostListSuccess(){}
+    private fun onRetrievePostListSuccess(postList:List<Post>){
+        postListAdapter.updatePostList(postList)
+    }
     private fun onRetrievePostListError(){
         errorMessage.value = R.string.post_error
     }

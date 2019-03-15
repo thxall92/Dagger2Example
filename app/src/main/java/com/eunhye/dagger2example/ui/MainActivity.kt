@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 
 import com.eunhye.dagger2example.R
+import com.eunhye.dagger2example.ui.post.PostListActivity
 import com.eunhye.dagger2example.viewmodel.MainViewModel
 import dagger.android.support.DaggerAppCompatActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
