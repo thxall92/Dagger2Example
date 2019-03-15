@@ -1,6 +1,7 @@
 package com.eunhye.dagger2example.ui
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -30,6 +31,10 @@ class MainActivity : DaggerAppCompatActivity() {
 
         subscribeUI()
         mainViewModel.getUser("홍길동")
+
+        button.setOnClickListener{
+            startActivity(Intent(this, PostListActivity::class.java))
+        }
     }
 
     @SuppressLint("CheckResult")
