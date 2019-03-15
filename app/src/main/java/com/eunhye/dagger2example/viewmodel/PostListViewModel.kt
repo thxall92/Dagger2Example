@@ -2,6 +2,7 @@ package com.eunhye.dagger2example.viewmodel
 
 import android.view.View
 import androidx.lifecycle.MutableLiveData
+import com.eunhye.dagger2example.R
 import com.eunhye.dagger2example.base.BaseViewModel
 import com.eunhye.dagger2example.network.PostApi
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -14,16 +15,18 @@ class PostListViewModel:BaseViewModel() {
     lateinit var postApi: PostApi
 
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
-    val errorMessage: MutableLiveData<Int> = MutableLiveData()
     // MutableLiveData : view will be able to observe in order to updat e the visibility of the ProgressBar
+
+    val errorMessage: MutableLiveData<Int> = MutableLiveData()
+    val errorClickListner = View.OnClickListener { loadPosts() }
 
     private lateinit var subscription: Disposable
 
     init {
-        loadPost()
+        loadPosts()
     }
 
-    private fun loadPost(){
+    private fun loadPosts(){
         subscription = postApi.getPosts()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -38,12 +41,15 @@ class PostListViewModel:BaseViewModel() {
 
     private fun onRetrievePostListStart(){
         loadingVisibility.value = View.VISIBLE
+        errorMessage.value = null
     }
     private fun onRetrievePostListFinish(){
         loadingVisibility.value = View.GONE
     }
     private fun onRetrievePostListSuccess(){}
-    private fun onRetrievePostListError(){}
+    private fun onRetrievePostListError(){
+        errorMessage.value = R.string.post_error
+    }
 
     override fun onCleared() {
         super.onCleared()
