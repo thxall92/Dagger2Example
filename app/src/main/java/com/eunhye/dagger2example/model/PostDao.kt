@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 
 @Dao
-//@Dao를 이용해 공통으로 사용하는 Insert, Update, Delete메서드를 정의하면 다른 곳에서 상속받아 사용할 수 있다
+//Dao class to allow us to insert and retrieve Posts from the database
 interface PostDao {
     @get:Query("SELECT * FROM post")
     val all: List<Post>
