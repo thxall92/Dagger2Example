@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.eunhye.dagger2example.R
 import com.eunhye.dagger2example.databinding.ActivityPostListBinding
-import com.eunhye.dagger2example.di.ViewModelFactory
+import com.eunhye.dagger2example.di.PostViewModelFactory
 import com.eunhye.dagger2example.viewmodel.PostListViewModel
 import com.google.android.material.snackbar.Snackbar
 
@@ -24,7 +24,7 @@ class PostListActivity: AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_post_list)
         binding.postList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        viewModel = ViewModelProviders.of(this, ViewModelFactory(this)).get(PostListViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, PostViewModelFactory(this)).get(PostListViewModel::class.java)
         //tell the provider to use this factory to instatiate the PostViewModel class
         viewModel.errorMessage.observe(this, Observer {
             errorMessage -> if(errorMessage!=null) showError(errorMessage) else hideError()
